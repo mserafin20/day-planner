@@ -25,7 +25,58 @@ $(function () {
     {id: '#hour 16', hour: 16},
     {id: '#hour 17', hour: 17}
   ];
+
+  var recoveredUserEntry = [];
+
+
+  // Info in local storage appears on page refresh
+
+  if(localStorage.getItem("day-planner-events") !== null) {
+    recoveredUserEntry = JSON.parse(localStorage.getItem("day-planner-events"));
+
+    localStorage.setItem(
+      "day-planner-events",
+      JSON.stringify(recoveredUserEntry)
+    );
+
+    $.each(recoveredUserEntry, function (key, value) {
+      if(value.day === todaysDate) {
+
+      }
+    })
+  }
   
+
+});
+
+// Putting current date at the top of the page
+
+$('#currentDay').text(todaysDate);
+
+// Assignement of colors based on time of day
+
+$.each(timeBlocks, function (key, value) {
+  var idHour = value.id;
+
+  if(value.hour < currentHour) {
+    $(idHour).removeClass("future");
+    $(idHour).removeClass("present");
+    $(idHour).addClass("past");
+  
+  } else if(value.hour === currentHour) {
+    $(idHour).removeClass("future");
+    $(idHour).removeClass("past");
+    $(idHour).addClass("present");
+
+  } else {
+    $(idHour).removeClass("past");
+    $(idHour).removeClass("present");
+    $(idHour).addClass("future");
+
+  }
+});
+
+
   // TODO: Add a listener for click events on the save button. This code should
   // use the id in the containing time-block as a key to save the user input in
   // local storage. HINT: What does `this` reference in the click listener
@@ -44,4 +95,3 @@ $(function () {
   // attribute of each time-block be used to do this?
   //
   // TODO: Add code to display the current date in the header of the page.
-});
