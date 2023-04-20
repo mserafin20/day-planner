@@ -1,6 +1,17 @@
 // Wrap all code that interacts with the DOM in a call to jQuery to ensure that
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
+
+// Time and date variables
+
+var todaysDate = dayjs().format("dddd, MMM D, YYYY");
+var currentYear = dayjs().year();
+var currentMonth = dayjs().format("MMM");
+var currentDay = dayjs().day();
+var currentDayName = dayjs().format("dddd");
+var currentHour = dayjs().format("HH");
+
+
 $(function () {
   
   // TODO: Add a listener for click events on the save button. This code should
