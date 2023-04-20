@@ -1,6 +1,21 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* Styling  */
 body {
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
+  padding: 1em;
+  text-align: center;
+}
+
+/* Header and Title Styling  */
+
+#currentDay.lead {
+  border-bottom: 5px solid black;
 }
 
 textarea {

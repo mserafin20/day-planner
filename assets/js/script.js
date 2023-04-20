@@ -11,43 +11,19 @@ var currentDay = dayjs().day();
 var currentDayName = dayjs().format("dddd");
 var currentHour = dayjs().format("HH");
 
+var timeBlocks = [
+  {id: '#hour 9', hour: 9},
+  {id: '#hour 10', hour: 10},
+  {id: '#hour 11', hour: 11},
+  {id: '#hour 12', hour: 12},
+  {id: '#hour 13', hour: 13},
+  {id: '#hour 14', hour: 14},
+  {id: '#hour 15', hour: 15},
+  {id: '#hour 16', hour: 16},
+  {id: '#hour 17', hour: 17}
+];
 
-$(function () {
-
-  var timeBlocks = [
-    {id: '#hour 9', hour: 9},
-    {id: '#hour 10', hour: 10},
-    {id: '#hour 11', hour: 11},
-    {id: '#hour 12', hour: 12},
-    {id: '#hour 13', hour: 13},
-    {id: '#hour 14', hour: 14},
-    {id: '#hour 15', hour: 15},
-    {id: '#hour 16', hour: 16},
-    {id: '#hour 17', hour: 17}
-  ];
-
-  var recoveredUserEntry = [];
-
-
-  // Info in local storage appears on page refresh
-
-  if(localStorage.getItem("day-planner-events") !== null) {
-    recoveredUserEntry = JSON.parse(localStorage.getItem("day-planner-events"));
-
-    localStorage.setItem(
-      "day-planner-events",
-      JSON.stringify(recoveredUserEntry)
-    );
-
-    $.each(recoveredUserEntry, function (key, value) {
-      if(value.day === todaysDate) {
-
-      }
-    })
-  }
-  
-
-});
+var recoveredUserEntry = [];
 
 // Putting current date at the top of the page
 
@@ -56,25 +32,71 @@ $('#currentDay').text(todaysDate);
 // Assignement of colors based on time of day
 
 $.each(timeBlocks, function (key, value) {
-  var idHour = value.id;
+  var presentHour = value.id;
 
   if(value.hour < currentHour) {
-    $(idHour).removeClass("future");
-    $(idHour).removeClass("present");
-    $(idHour).addClass("past");
+    $(presentHour).removeClass("future");
+    $(presentHour).removeClass("present");
+    $(presentHour).addClass("past");
   
   } else if(value.hour === currentHour) {
-    $(idHour).removeClass("future");
-    $(idHour).removeClass("past");
-    $(idHour).addClass("present");
+    $(presentHour).removeClass("future");
+    $(presentHour).removeClass("past");
+    $(presentHour).addClass("present");
 
   } else {
-    $(idHour).removeClass("past");
-    $(idHour).removeClass("present");
-    $(idHour).addClass("future");
+    $(presentHour).removeClass("past");
+    $(presentHour).removeClass("present");
+    $(presentHour).addClass("future");
 
   }
 });
+
+
+$(function () {
+
+  // Info in local storage appears on page refresh
+
+  if(localStorage.getItem("daily-events") !== null) {
+    recoveredUserEntry = JSON.parse(localStorage.getItem("daily-events"));
+
+    localStorage.setItem("daily-events",JSON.stringify(recoveredUserEntry));
+
+    $.each(recoveredUserEntry, function (key, value) {
+      if(value.day === todaysDate) {
+        var record = `#${value.hour}`;
+        $(record).find("textarea").text(value.event);
+      }
+    });
+  }
+  });
+
+
+// Clicking the save icon
+
+$('.saveBtn').click(function () {
+  var saveBtn = $(this).parent().attr("id");
+  var saveBtnId = `#${saveBtn}`;
+  var textInput = $(saveBtnId).find("textarea").val();
+  var userEntry = {
+    day: currentDay,
+    hour: saveBtn,
+    event: textInput,
+  };
+})
+
+// Confirmation Message
+
+var confirmationMessage = $("#confirmationMessage");
+var storageMessage = $("#storage-message");
+
+confirmationMessage.css("color", "black");
+storageMessage.css("color", "red");
+
+setTimeout(function() {
+  confirmationMessage.css("color", "transparent");
+  storageMessage.css("color", "transparent")
+}, 2000);
 
 
   // TODO: Add a listener for click events on the save button. This code should
