@@ -6,7 +6,7 @@ The objective of this project was to build an interactive day planner that store
 ## Usage
 ![](./assets/images/Screenshot%202023-04-23%20141903.png)
 
-[Live site is here]()
+[Live site is here](https://mserafin20.github.io/day-planner/)
 
 [Repository is here](https://github.com/mserafin20/day-planner) 
 
