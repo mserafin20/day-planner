@@ -11,6 +11,11 @@ var currentDay = dayjs().day();
 var currentDayName = dayjs().format("dddd");
 var currentHour = dayjs().format("HH");
 
+// Putting current date at the top of the page
+
+$('#currentDay').text(todaysDate);
+
+
 var timeBlocks = [
   {id: '#hour 9', hour: 9},
   {id: '#hour 10', hour: 10},
@@ -25,9 +30,6 @@ var timeBlocks = [
 
 var recoveredUserEntry = [];
 
-// Putting current date at the top of the page
-
-$('#currentDay').text(todaysDate);
 
 // Assignement of colors based on time of day
 
@@ -35,18 +37,12 @@ $.each(timeBlocks, function (key, value) {
   var presentHour = value.id;
 
   if(value.hour < currentHour) {
-    $(presentHour).removeClass("future");
-    $(presentHour).removeClass("present");
     $(presentHour).addClass("past");
   
   } else if(value.hour === currentHour) {
-    $(presentHour).removeClass("future");
-    $(presentHour).removeClass("past");
     $(presentHour).addClass("present");
 
   } else {
-    $(presentHour).removeClass("past");
-    $(presentHour).removeClass("present");
     $(presentHour).addClass("future");
 
   }
@@ -83,7 +79,30 @@ $('.saveBtn').click(function () {
     hour: saveBtn,
     event: textInput,
   };
-})
+
+  if (localStorage.getItem("daily-events") !== null) {
+    recoveredUserEntry = JSON.parse(
+      localStorage.getItem("daily-events")
+    );
+    recoveredUserEntry.push(userEntry);
+    localStorage.setItem(
+      "daily-events",
+        JSON.stringify(recoveredUserEntry)
+    );
+
+    $.each(recoveredUserEntry, function(key, value) {
+      if (value === currentDay) {
+        record = `${value.hour}`;
+        $(record).find("textarea").text(value.event);
+      }
+    });
+  }
+
+  else {
+    recoveredUserEntry.push(userEntry);
+    localStorage.setItem("daily-events", JSON.stringify(recoveredUserEntry));
+  }
+});
 
 // Confirmation Message
 
